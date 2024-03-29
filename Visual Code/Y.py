@@ -53,4 +53,4 @@ results_df = pd.DataFrame({
 })
 
 # 결과를 엑셀 파일로 저장
-results_df.to_excel('/Users/jungjinho/Downloads/results.xlsx', index=False)  # 저장할 경로 수정
+
