@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('/Users/jungjinho/Library/Mobile Documents/com~apple~CloudDocs/대학교/중부대학교/2024/2024 3-1/모의해킹:보안컨설팅프로젝트(캡스톤디자인)/프로그램/Visual Code/fonts/SCDream4.otf') format('truetype');
+}
+
+body {
+    font-family: 'MyCustomFont', sans-serif;
+}
