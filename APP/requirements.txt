@@ -1,0 +1,5 @@
+# 프로젝트 의존성 목록
+fastapi==0.68.0
+uvicorn==0.15.0
+motor==2.5.1
+pydantic==1.8.2
