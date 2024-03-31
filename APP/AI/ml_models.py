@@ -8,7 +8,6 @@ from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score
 
 def train_and_evaluate(X_train, X_test, y_train, y_test):
-    # 모델 정의 및 하이퍼파라미터 튜닝
     rf = make_pipeline(StandardScaler(with_mean=False), RandomForestClassifier(n_estimators=200, random_state=42))
     lr = make_pipeline(StandardScaler(with_mean=False), LogisticRegression(C=1, random_state=42))
     svm = make_pipeline(StandardScaler(with_mean=False), SVC(C=1, kernel='rbf', probability=True, random_state=42))
@@ -18,10 +17,8 @@ def train_and_evaluate(X_train, X_test, y_train, y_test):
     base_models = [('rf', rf), ('lr', lr), ('svm', svm), ('knn', knn), ('xgb', xgb)]
     stack_model = StackingClassifier(estimators=base_models, final_estimator=LogisticRegression(), cv=5)
 
-    # 스태킹 모델 학습
     stack_model.fit(X_train, y_train)
 
-    # 예측 및 성능 평가
     y_pred_stack = stack_model.predict(X_test)
     accuracy_stack = accuracy_score(y_test, y_pred_stack)
 

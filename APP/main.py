@@ -1,18 +1,21 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from example.APP.db import mongodb
+from db import mongodb
 from routers import site_checker
+from utils import crawler
+from schemas import checker
 
 app = FastAPI()
 
-# CORS 미들웨어 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 모든 오리진 허용
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # 모든 메소드 허용
-    allow_headers=["*"],  # 모든 헤더 허용
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(site_checker.router)
 app.include_router(mongodb.router)
+app.include_router(crawler.router)
+app.include_router(checker.router)

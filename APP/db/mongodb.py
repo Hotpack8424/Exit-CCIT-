@@ -1,7 +1,8 @@
-# APP/db/mongodb.py
-# MongoDB 연결, 데이터를 조회, 삽입하는 함수 정의
+from fastapi import APIRouter
 from pymongo import MongoClient
 import pandas as pd
+
+router = APIRouter()
 
 class MongoDB:
     def __init__(self, url="mongodb://localhost:27017"):
@@ -29,5 +30,3 @@ class MongoDB:
     def df_from_collection(self, db_name, collection_name, query={}):
         documents = self.find_all(db_name, collection_name, query)
         return pd.DataFrame(documents)
-
-    
