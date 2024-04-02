@@ -1,20 +1,36 @@
 document.addEventListener('DOMContentLoaded', function() {
     var toggleSwitch = document.getElementById('toggleSwitch');
-  
-    // 저장된 확장 프로그램 상태를 로드하고, 값이 없다면 기본적으로 ON 상태로 설정합니다.
+
     chrome.storage.local.get(['isExtensionEnabled'], function(result) {
-      if (result.isExtensionEnabled === undefined) {
-        // 'isExtensionEnabled' 값이 설정되어 있지 않으면 true로 설정합니다.
-        chrome.storage.local.set({'isExtensionEnabled': true});
-        toggleSwitch.checked = true;
-      } else {
-        // 저장된 값에 따라 스위치 상태를 설정합니다.
-        toggleSwitch.checked = result.isExtensionEnabled;
-      }
+        if (result.isExtensionEnabled === undefined) {
+            chrome.storage.local.set({'isExtensionEnabled': true});
+            toggleSwitch.checked = true;
+        } else {
+            toggleSwitch.checked = result.isExtensionEnabled;
+        }
     });
-  
-    // 스위치 클릭 이벤트 리스너를 추가합니다.
+
     toggleSwitch.addEventListener('change', function() {
-      chrome.storage.local.set({'isExtensionEnabled': toggleSwitch.checked});
+        chrome.storage.local.set({'isExtensionEnabled': toggleSwitch.checked});
+
+        chrome.runtime.sendMessage({ query: 'updateExtensionState', isEnabled: toggleSwitch.checked });
     });
-  });  
+});
+
+// 리다이렉션 출력 결과
+function displayRedirects(redirects) {
+    const container = document.getElementById('redirects');
+    if (redirects.length === 0) {
+        container.textContent = '리다이렉션이 감지되지 않았습니다.';
+        return;
+    }
+    redirects.forEach((redirect) => {
+        const element = document.createElement('p');
+        element.textContent = `URL: ${redirect.url} -> ${redirect.redirectUrl} (상태 코드: ${redirect.statusCode})`;
+        container.appendChild(element);
+    });
+}
+
+chrome.runtime.sendMessage({ query: 'getRedirects' }, (response) => {
+    displayRedirects(response.redirects);
+});
