@@ -1,17 +1,17 @@
 from bs4 import BeautifulSoup
 import pandas as pd
 from fastapi import APIRouter, HTTPException
-from schemas.checker import SiteCheckRequest, SiteCheckResponse
+from schemas.checker import SiteCheckRequest, SiteCheckResponse, RedirectData
 from db.mongodb import MongoDB
 from AI.ml_preprocessing import preprocess_and_vectorize
 from AI.ml_models import train_and_evaluate
 from AI.ml_storage import save_model, load_model
-from utils.crawler import get_content_with_requests, get_content_with_selenium, crawl_page
+from utils.crawler import crawl_page
 
 router = APIRouter()
 
 mongo_instance = MongoDB()
-collection = mongo_instance.get_collection("Search_Web_HTML", "User")
+collection = mongo_instance.get_collection("Search_Web", "User")
 collection_html = mongo_instance.get_collection("Search_Web_HTML", "User")
 ml_collection = mongo_instance.get_collection("Total_1", "Block")
 
@@ -32,8 +32,9 @@ headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; ARM Mac OS X 14_4) AppleWebKit
 async def check_site(site_check_request: SiteCheckRequest):
     url = site_check_request.url
 
-    if url == "chrome://newtab/":
+    if url == "chrome://newtab/" or "BlockedPage.html" in url or url == "http://127.0.0.1:5000/check":
         return SiteCheckResponse(url=url, blocked=False)
+
 
     collection.insert_one({"url": url})
 
@@ -55,8 +56,8 @@ async def check_site(site_check_request: SiteCheckRequest):
         collection_html.insert_one({
             "url": url,
             "title": title,
-            "metas": meta_text,
-            "a_text": a_text
+            "metas": [str(meta) for meta in metas],
+            "a_text": [str(link) for link in a_texts]
         })
         
         prediction = loaded_model.predict(combined_vector)
@@ -64,5 +65,14 @@ async def check_site(site_check_request: SiteCheckRequest):
         
         blocked = bool(prediction[0])
         return SiteCheckResponse(url=url, blocked=blocked)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.post("/save-redirect")
+async def save_redirect(data: RedirectData):
+    try:
+        redirect_collection = mongo_instance.get_collection("status", "redirectUrl")
+        redirect_collection.insert_one(data.dict())
+        return {"message": "Data saved successfully"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
