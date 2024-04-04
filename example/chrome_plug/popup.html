@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>유해 사이트 차단 설정</title>
+    <style>
+        body {
+            width: 450px;
+            padding: 30px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            background-color: #ffffff;
+            text-align: center;
+        }
+        h3 {
+            color: #333;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin: 20px 0;
+        }
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc; /* 비활성화 상태일 때의 배경색을 회색으로 설정 */
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px; /* 초기 위치를 왼쪽으로 설정 */
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #4CAF50; /* 활성화 상태일 때 배경색을 녹색으로 변경 */
+        }
+        input:focus + .slider {
+            box-shadow: 0 0 1px #4CAF50; /* 포커스 시의 그림자 색상을 녹색으로 변경 */
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px); /* 체크 상태일 때 오른쪽으로 이동 */
+        }
+        .slider:active:before {
+            width: 28px;
+        }        
+        a {
+            display: block;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+        a:hover {
+            background-color: #45a049;
+        }
+        #redirects p {
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #e8e8e8;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          }
+    </style>
+</head>
+<body>
+    <h3>불법 유해 사이트 차단</h3>
+    <div class="switch">
+        <input type="checkbox" id="toggleSwitch">
+        <label class="slider" for="toggleSwitch"></label>
+    </div>
+    <h3>접속 중인 사이트의 리다이렉션 확인</h3>
+    <div id = "redirects"></div>
+    <a href="http://127.0.0.1:5000/check" target="_blank">도메인 주소 확인하기</a>
+    <script src="popup.js"></script>
+</body>
+</html>
