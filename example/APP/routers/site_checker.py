@@ -17,6 +17,7 @@ collection = mongo_instance.get_collection("Search_Web", "User") # 사용자가 
 collection_html = mongo_instance.get_collection("Search_Web_HTML", "User") # 사용자가 입력한 주소의 웹 크롤링 정보를 저장하는 데이터베이스
 ml_collection = mongo_instance.get_collection("Total_1", "Block") # 불법 유해 사이트에 대한 데이터베이스
 harmful_collection = mongo_instance.get_collection("Total", "harmful") # 불법 유해 사이트의 URL을 모아 놓은 데이터베이스
+harmful_collection = mongo_instance.get_collection("Total", "notharmful") # 정상 사이트의 URL을 모아 놓은 데이터베이스
 
 def is_official_tld(url):
     excel_file_path = '/Users/jungjinho/Desktop/Exit/example/APP/routers/Tld.xlsx'
