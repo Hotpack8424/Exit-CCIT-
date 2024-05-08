@@ -34,7 +34,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["BlockedPage.html"],
+      "resources": ["https://hit-ant.my.canva.site/blockpage"],
       "matches": ["<all_urls>"]
     }
   ]

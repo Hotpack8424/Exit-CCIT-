@@ -89,24 +89,24 @@ HTML_TEMPLATE = """
 
         h1 {
             color: #212529;
-            font-size: 2.25rem; /* 36px */
+            font-size: 2.25rem;
             font-weight: 700;
             margin-bottom: 0.5em;
         }
 
         h2 {
             color: #6c757d;
-            font-size: 1.25rem; /* 20px */
+            font-size: 1.25rem;
             font-weight: 400;
             margin-bottom: 1.5em;
         }
 
         input[type="text"] {
             padding: 12px 20px;
-            font-size: 1rem; /* 16px */
+            font-size: 1rem;
             border: 2px solid #ced4da;
             border-radius: 30px;
-            width: 300px; /* 검색창 너비 조정 */
+            width: 300px;
             outline: none;
             color: #495057;
             transition: border-color 0.3s ease-in-out;
@@ -119,7 +119,7 @@ HTML_TEMPLATE = """
 
         button {
             padding: 12px 24px;
-            font-size: 1rem; /* 16px */
+            font-size: 1rem;
             background-color: #007bff;
             color: white;
             border: none;
@@ -142,7 +142,7 @@ HTML_TEMPLATE = """
         footer {
             margin-top: 60px;
             color: #6c757d;
-            font-size: 0.875rem; /* 14px */
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -153,7 +153,6 @@ HTML_TEMPLATE = """
         <h2>도메인 주소를 한 번 입력 해보세요.</h2>
     </header>
     
-    <!-- 검색 폼 항상 표시 -->
     <section>
         {% if message %}
             <p>{{ message }}</p>

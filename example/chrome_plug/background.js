@@ -1,6 +1,26 @@
 let redirects = [];
 let isExtensionEnabled = true;
 
+function updateIcon() {
+    let path;
+    if (isExtensionEnabled) {
+        path = {
+            "16": "image/image16.png",
+            "48": "image/image48.png",
+            "64": "image/image64.png",
+            "128": "image/image128.png"
+        };
+    } else {
+        path = {
+            "16": "image/image16_red.png",
+            "48": "image/image48_red.png",
+            "64": "image/image64_red.png",
+            "128": "image/image128_red.png"
+        };
+    }
+    chrome.action.setIcon({path: path});
+}
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.status === 'complete' && tab.url && isExtensionEnabled) {
         fetch('http://127.0.0.1:8000/check_site', {
@@ -14,7 +34,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         .then(data => {
             console.log(data)
             if (data.blocked) {
-                chrome.tabs.update(tabId, {url: "BlockedPage.html"});
+                chrome.tabs.update(tabId, {url: "https://hit-ant.my.canva.site/blockpage"});
             }
         })
         .catch(error => console.error('Error:', error));
@@ -36,7 +56,6 @@ function sendRedirectData(redirectData) {
   });
 }
 
-// 리다이렉션 탐지 함수
 chrome.webRequest.onBeforeRedirect.addListener(
   function (details) {
       const redirectObj = {
@@ -51,14 +70,16 @@ chrome.webRequest.onBeforeRedirect.addListener(
   ['responseHeaders']
 );
 
-
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.query === 'getRedirects') {
         sendResponse({ redirects: redirects });
     } else if (request.query === 'updateExtensionState') {
         isExtensionEnabled = request.isEnabled;
+        updateIcon();
         if (!isExtensionEnabled) {
             redirects = [];
         }
     }
 });
+
+updateIcon();
